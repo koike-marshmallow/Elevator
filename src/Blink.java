@@ -18,7 +18,7 @@ class Blink extends Thread{
         while( runFlag ){
             component.repaint();
             try{
-                Thread.sleep(1000);
+                Thread.sleep(interval);
             }catch(InterruptedException e){}
             count++;
         }

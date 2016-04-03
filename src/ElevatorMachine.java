@@ -23,6 +23,7 @@ class ElevatorMachine {
         door = 0.0;
         speed = 0;
         doorSpeed = 0;
+        errCode = ERR_DEFAULT;
     }
 
     //configs
@@ -117,12 +118,12 @@ class ElevatorMachine {
         if( doorSpeed > 0 ){
             door = Math.min(1.0, Math.max(0.0, door + (doorSpeed * rate)));
             if( door >= 1.0 ){
-                door = 0.0;
+                doorSpeed = 0.0;
             }
         }else if( doorSpeed < 0 ){
             door = Math.min(1.0, Math.max(0.0, door + (doorSpeed * rate)));
             if( door <= 0.0 ){
-                door = 0.0;
+                doorSpeed = 0.0;
             }
         }
     }
