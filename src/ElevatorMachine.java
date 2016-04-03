@@ -45,8 +45,8 @@ class ElevatorMachine {
         markers.clear();
     }
 
-    public int[] getMarkerList(){
-        return markers.toArray(new int[markers.size()]);
+    public Integer[] getMarkerList(){
+        return markers.toArray(new Integer[markers.size()]);
     }
 
     //control
@@ -75,6 +75,15 @@ class ElevatorMachine {
         return door;
     }
 
+    public int getMarker(){
+        for(int i=0; i<markers.size(); i++){
+            if( markers.get(i) == position ){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     //errorhandle
     public boolean isError(){
         return errCode != ERR_DEFAULT;
@@ -91,14 +100,34 @@ class ElevatorMachine {
 
     //simulate
     public void step(double rate){
+        //errorCheck
+        if( errCode != ERR_DEFAULT ) return;
+
         //car lifting
         if( speed != 0 ){
-            
+            int moved = position + (int)(speed * rate);
+            position = Math.min(height, Math.max(0, moved));
+            if( moved < 0 || moved > height ){
+                errCode = ERR_LIMIT;
+                speed = 0;
+            }
+        }
+
+        //door
+        if( doorSpeed > 0 ){
+            door = Math.min(1.0, Math.max(0.0, door + (doorSpeed * rate)));
+            if( door >= 1.0 ){
+                door = 0.0;
+            }
+        }else if( doorSpeed < 0 ){
+            door = Math.min(1.0, Math.max(0.0, door + (doorSpeed * rate)));
+            if( door <= 0.0 ){
+                door = 0.0;
+            }
         }
     }
 
-
-
-
-
+    public void step(){
+        step(1.0);
+    }
 }
